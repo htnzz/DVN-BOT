@@ -1,8 +1,8 @@
 import uuid
 from datetime import date, datetime
-from decimal import Decimal
 
-from sqlalchemy import Date, DateTime, Index, Numeric, String, Text, func
+
+from sqlalchemy import Date, DateTime, Index, String, Text, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 

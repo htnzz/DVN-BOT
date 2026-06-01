@@ -1,12 +1,11 @@
 import uuid
 from datetime import datetime
-from typing import Any
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Index, String, func
-from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy import DateTime, ForeignKey, Index, func
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.db.models import Base, User, ObjectRef
+from src.db.models import Base, User, AuditLog
 
 
 class Notification(Base):
