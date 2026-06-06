@@ -1,12 +1,17 @@
 import uuid
 from datetime import date, datetime
-
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Date, DateTime, Index, String, Text, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.db.models import Base, PhotoReport, Comment, Notification, AuditLog, StatusChange
+from src.db.models.base import Base
+if TYPE_CHECKING:
+    from src.db.models.comment import  Comment
+    from src.db.models.notification import  Notification
+    from src.db.models.audit_log import  AuditLog
+    from src.db.models.status_change import  StatusChange
 
 
 class ObjectRef(Base):
@@ -14,8 +19,6 @@ class ObjectRef(Base):
     __table_args__ = (
         Index("ix_object_refs_external_id", "external_id"),
         Index("ix_object_refs_code", "code"),
-        Index("ix_object_refs_status_external_id", "status_external_id"),
-        Index("ix_object_refs_status_code", "status_code"),
         Index("ix_object_refs_responsible_external_id", "responsible_external_id"),
         Index("ix_object_refs_start_date", "start_date"),
         Index("ix_object_refs_end_date", "end_date"),

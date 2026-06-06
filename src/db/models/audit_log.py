@@ -1,12 +1,16 @@
 import uuid
 from datetime import datetime
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, Index, String, Text, func
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.db.models import Base, User, ObjectRef
+from src.db.models.base import Base
+if TYPE_CHECKING:
+    from src.db.models.user import User
+    from src.db.models.object_ref import ObjectRef
+
 
 
 class AuditLog(Base):

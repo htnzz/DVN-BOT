@@ -1,11 +1,15 @@
 import uuid
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, Index, String, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.db.models import Base, ObjectRef, User
+from src.db.models.base import Base
+if TYPE_CHECKING:
+    from src.db.models.object_ref import  ObjectRef
+    from src.db.models.user import User
 
 
 class StatusChange(Base):

@@ -1,11 +1,17 @@
 import uuid
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, Index, String, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.db.models import Base, Comment, AuditLog, PhotoReport, StatusChange, Notification
+from src.db.models.base import Base
+if TYPE_CHECKING:
+    from src.db.models.comment import  Comment
+    from src.db.models.audit_log import  AuditLog
+    from src.db.models.status_change import  StatusChange
+    from src.db.models.notification import  Notification
 
 
 class User(Base):
@@ -14,7 +20,6 @@ class User(Base):
         Index("ix_users_messenger_user_id", "messenger_user_id"),
         Index("ix_users_phone", "phone"),
         Index("ix_users_role", "role"),
-        Index("ix_users_is_active", "is_active"),
     )
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)

@@ -1,11 +1,15 @@
 import uuid
 from datetime import datetime
+from typing import Any, TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, Index, Text, func, Enum as SQLEnum
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.db.models import Base, User, ObjectRef
+from src.db.models.base import Base
+if TYPE_CHECKING:
+    from src.db.models.user import  User
+    from src.db.models.object_ref import  ObjectRef
 from src.enums import ObjectCommentType
 
 class Comment(Base):
