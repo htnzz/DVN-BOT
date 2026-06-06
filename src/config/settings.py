@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     gis_api_key: str = Field(alias="GIS_API_KEY")
     gis_api_timeout_seconds: int = Field(default=30, alias="GIS_API_TIMEOUT_SECONDS")
 
+    max_token: SecretStr = Field(alias="MAX_TOKEN")
+
     model_config = SettingsConfigDict(
         env_file='.env',
         env_file_encoding='utf-8',
