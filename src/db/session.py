@@ -28,3 +28,8 @@ def create_session_factory(engine: AsyncEngine) -> async_sessionmaker[AsyncSessi
         bind=engine,
         expire_on_commit=False,
     )
+
+
+async_session_maker: async_sessionmaker[AsyncSession] = async_sessionmaker(
+    expire_on_commit=False,
+)
