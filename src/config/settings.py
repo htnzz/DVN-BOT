@@ -17,6 +17,11 @@ class Settings(BaseSettings):
 
     max_token: SecretStr = Field(alias="MAX_TOKEN")
 
+    s3_bucket_name: str = Field(alias="S3_BUCKET_NAME")
+    s3_endpoint_url: str = Field(alias="S3_BUCKET_NAME")
+    s3_access_key: str = Field(alias="S3_ACCESS_KEY")
+    s3_secret_key: SecretStr = Field(alias="S3_ACCESS_KEY")
+
     model_config = SettingsConfigDict(
         env_file='.env',
         env_file_encoding='utf-8',
