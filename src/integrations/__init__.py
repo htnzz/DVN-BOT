@@ -1,0 +1,1 @@
+from src.integrations.gis_mock import authenticate_user
