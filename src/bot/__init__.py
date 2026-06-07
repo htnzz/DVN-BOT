@@ -1,4 +1,4 @@
-from aiomax.bot import Bot
+from src.bot.handlers import setup_handlers
 
-def setup_handlers(bot: Bot) -> None:
-    pass
+
+__all__ = ("setup_handlers",)
