@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import DateTime, Index, String, func
+from sqlalchemy import DateTime, Index, Integer, String, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -20,10 +20,12 @@ class User(Base):
         Index("ix_users_messenger_user_id", "messenger_user_id"),
         Index("ix_users_phone", "phone"),
         Index("ix_users_role", "role"),
+        Index("ix_users_gis_user_id", "gis_user_id"),
     )
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     messenger_user_id: Mapped[str | None] = mapped_column(String(255), unique=True, nullable=True)
+    gis_user_id: Mapped[int | None] = mapped_column(Integer, unique=True, nullable=True)
     username: Mapped[str | None] = mapped_column(String(255), nullable=True)
     phone: Mapped[str | None] = mapped_column(String(32), unique=True, nullable=True)
     full_name: Mapped[str] = mapped_column(String(255), nullable=False)
