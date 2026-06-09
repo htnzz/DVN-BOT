@@ -2,10 +2,12 @@ from __future__ import annotations
 
 from aiomax.bot import Bot
 from aiomax.fsm import FSMCursor
-from aiomax.types import Callback, CommandContext, Message
+from aiomax.types import Callback, CommandContext, Message, PhotoAttachment
 
-from src.bot.keyboards import build_help_keyboard, build_main_menu_keyboard
-from src.services import AuthResultStatus, AuthService, MenuCallbackPayload, MenuService
+from src.bot.keyboards import build_help_keyboard, build_main_menu_keyboard, build_object_details_keyboard, \
+    build_objects_keyboard
+from src.services import AuthResultStatus, AuthService, MenuCallbackPayload, MenuService, ObjectCallbackPayload, \
+    ObjectService
 
 _AUTH_PHONE_STATE = "auth:phone"
 _AUTH_PASSWORD_STATE = "auth:password"
@@ -73,9 +75,63 @@ def setup_handlers(bot: Bot) -> None:
             keyboard=build_main_menu_keyboard(),
         )
 
-    @bot.on_button_callback(
-        MenuCallbackPayload.OBJECTS, MenuCallbackPayload.SETTINGS, mode="or"
-    )
+    @bot.on_button_callback(MenuCallbackPayload.OBJECTS)
+    async def objects_menu_handler(callback: Callback, cursor: FSMCursor) -> None:
+        auth_service = AuthService(callback.bot.session_factory)
+        user = await auth_service.get_authorized_user(callback.user_id)
+
+        if user is None:
+            cursor.clear()
+            await callback.answer(
+                text="Для доступа к меню авторизуйтесь через /start."
+            )
+            return
+
+        object_service = ObjectService(callback.bot.session_factory)
+        objects = await object_service.get_user_objects(callback.user_id)
+        await callback.answer(
+            text=object_service.get_objects_list_text(objects),
+            keyboard=build_objects_keyboard(objects),
+        )
+
+    @bot.on_button_callback(ObjectCallbackPayload.is_object_callback)
+    async def object_details_handler(callback: Callback, cursor: FSMCursor) -> None:
+        auth_service = AuthService(callback.bot.session_factory)
+        user = await auth_service.get_authorized_user(callback.user_id)
+
+        if user is None:
+            cursor.clear()
+            await callback.answer(
+                text="Для доступа к меню авторизуйтесь через /start."
+            )
+            return
+
+        object_id = ObjectCallbackPayload.parse(callback.payload)
+        if object_id is None:
+            await callback.answer(notification="Не удалось определить объект.")
+            return
+
+        object_service = ObjectService(callback.bot.session_factory)
+        object_details = await object_service.get_user_object_details(
+            max_id=callback.user_id,
+            object_id=object_id,
+        )
+        if object_details is None:
+            await callback.answer(notification="Объект не найден или недоступен.")
+            return
+
+        attachments = (
+            PhotoAttachment(url=object_details.photo_url)
+            if object_details.photo_url
+            else None
+        )
+        await callback.answer(
+            text=object_service.get_object_details_text(object_details),
+            keyboard=build_object_details_keyboard(),
+            attachments=attachments,
+        )
+
+    @bot.on_button_callback(MenuCallbackPayload.SETTINGS)
     async def menu_stub_handler(callback: Callback) -> None:
         menu_service = MenuService()
         await callback.answer(
