@@ -10,6 +10,7 @@ from src.db.models.base import Base
 if TYPE_CHECKING:
     from src.db.models.user import User
     from src.db.models.object_ref import ObjectRef
+    from src.db.models.notification import Notification
 
 
 
@@ -41,3 +42,4 @@ class AuditLog(Base):
 
     actor: Mapped["User"] = relationship(back_populates="audit_logs")
     object_ref: Mapped["ObjectRef"] = relationship(back_populates="audit_logs")
+    recipients: Mapped[list["Notification"]] = relationship(back_populates="audit_log")

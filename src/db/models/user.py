@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from src.db.models.audit_log import  AuditLog
     from src.db.models.status_change import  StatusChange
     from src.db.models.notification import  Notification
+    from src.db.models.object_ref import ObjectRef
 
 
 class User(Base):
@@ -39,7 +40,7 @@ class User(Base):
     )
 
     comments: Mapped[list["Comment"]] = relationship(back_populates="author")
-    photo_reports: Mapped[list["PhotoReport"]] = relationship(back_populates="author")
+    objects: Mapped[list["ObjectRef"]] = relationship(back_populates="responsible")
     status_changes: Mapped[list["StatusChange"]] = relationship(
         back_populates="author",
         foreign_keys="StatusChange.author_id",
