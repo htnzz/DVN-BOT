@@ -51,3 +51,7 @@ class User(Base):
     )
     notifications: Mapped[list["Notification"]] = relationship(back_populates="recipient")
     audit_logs: Mapped[list["AuditLog"]] = relationship(back_populates="actor")
+    object_comments: Mapped[list["Comment"]] = relationship(
+        back_populates="author",
+    )
+    audit_log_recipients: Mapped[list["Notification"]] = relationship(back_populates="recipient")

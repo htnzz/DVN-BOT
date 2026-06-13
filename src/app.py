@@ -4,6 +4,7 @@ from loguru import logger
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
+import src.bot.aiomax_patches.intent_patch # noqa: F401
 from src.bot import setup_handlers
 from src.config.settings import Settings, get_settings
 from src.db.session import create_db_engine, create_session_factory

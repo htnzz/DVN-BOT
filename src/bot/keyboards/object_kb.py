@@ -13,7 +13,7 @@ def build_objects_keyboard(objects: list[ObjectRef]) -> list[list[CallbackButton
 
 def build_object_details_keyboard() -> list[list[CallbackButton]]:
     return [
-        [CallbackButton("📋 Моковая кнопка 1", "mock:object:1")],
-        [CallbackButton("🛠 Моковая кнопка 2", "mock:object:2")],
+        [CallbackButton("📋 Моковая кнопка 1", "mock:object:1", intent="default")],
+        [CallbackButton("🛠 Моковая кнопка 2", "mock:object:2", intent="default")],
     ]
     

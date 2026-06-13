@@ -1,8 +1,12 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic import SecretStr, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
+BASE_DIR = Path(__file__).resolve().parents[2]
+ENV_FILE = BASE_DIR / ".env"
 
 class Settings(BaseSettings):
     postgres_host: str = Field(alias="POSTGRES_HOST")
@@ -23,7 +27,7 @@ class Settings(BaseSettings):
     s3_secret_key: SecretStr = Field(alias="S3_SECRET_KEY")
 
     model_config = SettingsConfigDict(
-        env_file='.env',
+        env_file=ENV_FILE,
         env_file_encoding='utf-8',
         extra='ignore',
     )

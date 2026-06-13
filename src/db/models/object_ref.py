@@ -59,5 +59,4 @@ class ObjectRef(Base):
     comments: Mapped[list["Comment"]] = relationship(back_populates="object_ref")
     responsible: Mapped["User | None"] = relationship(back_populates="objects")
     status_changes: Mapped[list["StatusChange"]] = relationship(back_populates="object_ref")
-    notifications: Mapped[list["Notification"]] = relationship(back_populates="object_ref")
     audit_logs: Mapped[list["AuditLog"]] = relationship(back_populates="object_ref")

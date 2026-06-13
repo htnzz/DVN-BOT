@@ -20,6 +20,14 @@ _MOCK_GIS_USERS: tuple[GisUserData, ...] = (
         phone="+79991112233",
         password="1234",
     ),
+
+    GisUserData(
+        id=32,
+        full_name="Вазген Вазгенович",
+        role="Мастер",
+        phone="+79996148814",
+        password="0000",
+    )
 )
 
 
