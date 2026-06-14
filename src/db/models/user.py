@@ -8,11 +8,11 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.db.models.base import Base
 if TYPE_CHECKING:
-    from src.db.models.comment import  Comment
     from src.db.models.audit_log import  AuditLog
     from src.db.models.status_change import  StatusChange
     from src.db.models.notification import  Notification
     from src.db.models.object_ref import ObjectRef
+    from src.db.models.report import  Report
 
 
 class User(Base):
@@ -39,7 +39,7 @@ class User(Base):
         onupdate=func.now(),
     )
 
-    comments: Mapped[list["Comment"]] = relationship(back_populates="author")
+    reports: Mapped[list["Report"]] = relationship(back_populates="author")
     objects: Mapped[list["ObjectRef"]] = relationship(back_populates="responsible")
     status_changes: Mapped[list["StatusChange"]] = relationship(
         back_populates="author",
@@ -51,7 +51,4 @@ class User(Base):
     )
     notifications: Mapped[list["Notification"]] = relationship(back_populates="recipient")
     audit_logs: Mapped[list["AuditLog"]] = relationship(back_populates="actor")
-    object_comments: Mapped[list["Comment"]] = relationship(
-        back_populates="author",
-    )
     audit_log_recipients: Mapped[list["Notification"]] = relationship(back_populates="recipient")

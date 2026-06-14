@@ -1,6 +1,6 @@
+from src.db.repositories.report_repository import ReportRepository
 from src.db.repositories.audit_log_repository import AuditLogRepository
 from src.db.repositories.base import BaseRepository
-from src.db.repositories.comment_repository import CommentRepository
 from src.db.repositories.notification_repository import NotificationRepository
 from src.db.repositories.object_ref_repository import ObjectRefRepository
 from src.db.repositories.status_change_repository import StatusChangeRepository
@@ -11,7 +11,7 @@ __all__ = (
     "UserRepository",
     "ObjectRefRepository",
     "AuditLogRepository",
-    "CommentRepository",
+    "ReportRepository",
     "NotificationRepository",
     "StatusChangeRepository",
 )

@@ -1,7 +1,7 @@
 from aiomax.buttons import CallbackButton
 
 from src.db.models.object_ref import ObjectRef
-from src.bot.keyboards.callbacks import ObjectCallbackPayload, MenuCallbackPayload
+from src.bot.keyboards.callbacks import ObjectAction, ObjectActionCallbackPayload, ObjectCallbackPayload, MenuCallbackPayload
 
 
 def build_objects_keyboard(objects: list[ObjectRef]) -> list[list[CallbackButton]]:
@@ -31,9 +31,22 @@ def build_objects_keyboard(objects: list[ObjectRef]) -> list[list[CallbackButton
     return keyboard
 
 
-def build_object_details_keyboard() -> list[list[CallbackButton]]:
+def build_object_details_keyboard(object_id) -> list[list[CallbackButton]]:
     return [
-        [CallbackButton("📋 Моковая кнопка 1", "mock:object:1", intent="default")],
-        [CallbackButton("🛠 Моковая кнопка 2", "mock:object:2", intent="default")],
+        [CallbackButton("📝 Новый отчёт", ObjectActionCallbackPayload.build(ObjectAction.NEW_REPORT, object_id), intent="default")],
+        [CallbackButton("📊 Отчёты", ObjectActionCallbackPayload.build(ObjectAction.REPORTS, object_id), intent="default")],
+        [CallbackButton("💬 Комментарии", ObjectActionCallbackPayload.build(ObjectAction.COMMENTS, object_id), intent="default")],
+        [CallbackButton("📋 К списку объектов", MenuCallbackPayload.OBJECTS.value, intent="default")],
+        [CallbackButton("🏠 Главное меню", MenuCallbackPayload.MAIN_MENU.value, intent="default")],
+
     ]
+
+
+def build_report_success_keyboard(object_id) -> list[list[CallbackButton]]:
+    return [
+        [CallbackButton("🏠 Главное меню", MenuCallbackPayload.MAIN_MENU.value, intent="default")],
+        [CallbackButton("🏗 К объекту", ObjectCallbackPayload.build(object_id), intent="default")],
+    ]
+
+
     

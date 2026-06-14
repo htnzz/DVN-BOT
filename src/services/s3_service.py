@@ -113,6 +113,28 @@ class S3Service:
             )
             raise
 
+    async def upload_bytes(
+        self,
+        *,
+        key: str,
+        data: bytes,
+        content_type: str | None = None,
+    ) -> str:
+        async with self._get_client() as client:
+            extra_args: dict[str, Any] = {}
+            if content_type:
+                extra_args["ContentType"] = content_type
+
+            await client.put_object(
+                Bucket=self.bucket_name,
+                Key=key,
+                Body=data,
+                **extra_args,
+            )
+
+        return key
+
+
     async def get_presigned_url(
         self,
         key: str,

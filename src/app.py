@@ -26,7 +26,9 @@ class App:
     def _setup_dependencies(self) -> None:
         self.bot.db_engine = self.db_engine
         self.bot.session_factory = self.session_factory
-        self.bot.max_media_service = MaxMediaService(S3Service())
+        s3_service = S3Service()
+        self.bot.s3_service = s3_service
+        self.bot.max_media_service = MaxMediaService(s3_service)
 
     def _register_bot_components(self) -> None:
         setup_handlers(self.bot)

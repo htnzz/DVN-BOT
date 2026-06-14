@@ -14,7 +14,7 @@ from src.db.models import (  # noqa: F401
 AuditLog,
 ObjectRef,
 User,
-Comment,
+Report,
 Notification,
 StatusChange
 )
