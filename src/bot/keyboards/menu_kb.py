@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from aiomax.buttons import CallbackButton
 
-from src.services.menu_service import MenuCallbackPayload
+from src.bot.keyboards.callbacks import MenuCallbackPayload
 
 
 def build_main_menu_keyboard() -> list[list[CallbackButton]]:

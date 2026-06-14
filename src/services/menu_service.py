@@ -3,13 +3,6 @@ from __future__ import annotations
 from enum import StrEnum
 
 
-class MenuCallbackPayload(StrEnum):
-    OBJECTS = "menu:objects"
-    SETTINGS = "menu:settings"
-    HELP = "menu:help"
-    MAIN_MENU = "menu:main"
-
-
 class MenuService:
     @staticmethod
     def get_main_menu_text() -> str:
