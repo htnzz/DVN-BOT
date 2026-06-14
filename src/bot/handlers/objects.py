@@ -1,10 +1,10 @@
 from aiomax.bot import Bot
 from aiomax.fsm import FSMCursor
-from aiomax.types import Callback, PhotoAttachment
+from aiomax.types import Callback
 
 from src.bot.keyboards import build_object_details_keyboard, build_objects_keyboard
-from src.services import AuthService, ObjectService
 from src.bot.keyboards.callbacks import ObjectCallbackPayload, MenuCallbackPayload
+from src.services import AuthService, ObjectService
 
 _AUTH_REQUIRED_TEXT = "Для доступа к меню авторизуйтесь через /start."
 
@@ -28,7 +28,9 @@ def setup_object_handlers(bot: Bot) -> None:
             return
 
         object_service = ObjectService(callback.bot.session_factory)
+
         objects = await object_service.get_user_objects(callback.user_id)
+
         await callback.answer(
             text=object_service.get_objects_list_text(objects),
             keyboard=build_objects_keyboard(objects),
@@ -40,26 +42,37 @@ def setup_object_handlers(bot: Bot) -> None:
             return
 
         object_id = ObjectCallbackPayload.parse(callback.payload)
+
         if object_id is None:
             await callback.answer(notification="Не удалось определить объект.")
             return
 
         object_service = ObjectService(callback.bot.session_factory)
+
         object_details = await object_service.get_user_object_details(
             max_id=callback.user_id,
             object_id=object_id,
         )
+
         if object_details is None:
             await callback.answer(notification="Объект не найден или недоступен.")
             return
 
-        attachments = (
-            PhotoAttachment(url=object_details.photo_url)
-            if object_details.photo_url
-            else None
-        )
-        await callback.answer(
-            text=object_service.get_object_details_text(object_details),
-            keyboard=build_object_details_keyboard(),
-            attachments=attachments,
-        )
+        attachment = None
+
+        if object_details.photo_url:
+            attachment = await callback.bot.max_media_service.build_image_attachment_by_file_key(
+                bot=callback.bot,
+                file_key=object_details.photo_url,
+                mime_type="image/jpeg",
+            )
+
+        answer_kwargs = {
+            "text": object_service.get_object_details_text(object_details),
+            "keyboard": build_object_details_keyboard(),
+        }
+
+        if attachment is not None:
+            answer_kwargs["attachments"] = attachment
+
+        await callback.answer(**answer_kwargs)

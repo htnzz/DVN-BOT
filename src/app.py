@@ -8,6 +8,7 @@ import src.bot.aiomax_patches.intent_patch # noqa: F401
 from src.bot import setup_handlers
 from src.config.settings import Settings, get_settings
 from src.db.session import create_db_engine, create_session_factory
+from src.services import MaxMediaService, S3Service
 
 
 class App:
@@ -25,6 +26,7 @@ class App:
     def _setup_dependencies(self) -> None:
         self.bot.db_engine = self.db_engine
         self.bot.session_factory = self.session_factory
+        self.bot.max_media_service = MaxMediaService(S3Service())
 
     def _register_bot_components(self) -> None:
         setup_handlers(self.bot)
