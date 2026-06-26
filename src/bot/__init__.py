@@ -1,4 +1,1 @@
-from src.bot.handlers import setup_handlers
-
-
-__all__ = ("setup_handlers",)
+__all__: tuple[str, ...] = ()

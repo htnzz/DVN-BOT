@@ -1,17 +1,17 @@
 from __future__ import annotations
 
-from aiomax.buttons import CallbackButton
+from src.messengers.common.keyboard import Button, Keyboard
 
 from src.bot.keyboards.callbacks import MenuCallbackPayload
 
 
-def build_main_menu_keyboard() -> list[list[CallbackButton]]:
+def build_main_menu_keyboard() -> Keyboard:
     return [
-        [CallbackButton("👷‍♂️ Мои объекты", MenuCallbackPayload.OBJECTS.value, intent="default")],
-        [CallbackButton("⚙️ Настройки", MenuCallbackPayload.SETTINGS.value, intent="positive")],
-        [CallbackButton("❓ Помощь", MenuCallbackPayload.HELP.value, intent="negative")],
+        [Button("👷‍♂️ Мои объекты", MenuCallbackPayload.OBJECTS.value, intent="default")],
+        [Button("⚙️ Настройки", MenuCallbackPayload.SETTINGS.value, intent="positive")],
+        [Button("❓ Помощь", MenuCallbackPayload.HELP.value, intent="negative")],
     ]
 
 
-def build_help_keyboard() -> list[list[CallbackButton]]:
-    return [[CallbackButton("◀️ В меню", MenuCallbackPayload.MAIN_MENU.value, intent="default")]]
+def build_help_keyboard() -> Keyboard:
+    return [[Button("◀️ В меню", MenuCallbackPayload.MAIN_MENU.value, intent="default")]]

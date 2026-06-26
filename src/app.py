@@ -4,11 +4,14 @@ from loguru import logger
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
-import src.bot.aiomax_patches.intent_patch # noqa: F401
-from src.bot import setup_handlers
+import src.messengers.max.patches  # noqa: F401
+from src.messengers.max.handlers import setup_max_handlers
+
 from src.config.settings import Settings, get_settings
 from src.db.session import create_db_engine, create_session_factory
-from src.services import MaxMediaService, S3Service
+from src.messengers.max.media_adapter import MaxMediaAdapter
+from src.services import S3Service
+
 
 
 class App:
@@ -28,10 +31,10 @@ class App:
         self.bot.session_factory = self.session_factory
         s3_service = S3Service()
         self.bot.s3_service = s3_service
-        self.bot.max_media_service = MaxMediaService(s3_service)
+        self.bot.max_media_adapter = MaxMediaAdapter(s3_service)
 
     def _register_bot_components(self) -> None:
-        setup_handlers(self.bot)
+        setup_max_handlers(self.bot)
 
     async def connect(self) -> None:
         logger.info("Проверяем подключение к базе данных...")
